@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Progress Report - EcoMind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/cssstatusbar.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <button class="hamburger-icon" id="hamburger-icon">☰</button>
+            <a href="homepage.html" class="logo">
+                <img src="https://placehold.co/30x30/4CAF50/FFFFFF?text=E" alt="EcoMind Logo">
+                EcoMind
+            </a>
+        </div>
+        <nav class="top-nav-links">
+            <a href="homepage.html">Home</a>
+            <a href="modulehomepage.html">Modules</a>
+            <a href="gamehomepage.html">Game</a>
+            <div id="login-status-container">
+                <a href="login.html" class="login-button" id="loginLink">Login</a>
+                <div id="userAvatarContainer" class="user-avatar-container hidden">
+                    <img id="userAvatarImg" src="https://static.vecteezy.com/system/resources/thumbnails/019/879/186/small/user-icon-on-transparent-background-free-png.png" alt="User Avatar">
+                    <div class="profile-dropdown-content" id="userDropdownMenu"> 
+                        <a href="profile.html" id="profileLinkDropdown">My Profile</a>
+                        <button id="logoutButton">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="sidebar-container" id="sidebar-container">
+        <aside class="sidebar-menu" id="sidebar-menu">
+            <button class="close-sidebar-btn" id="close-sidebar-btn">&times;</button>
+            <ul class="sidebar-links">
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="modulehomepage.html">Modules</a></li>
+                <li><a href="#final-assessment">Final Assessment</a></li>
+                <!-- Sidebar Login/Logout/Profile items (managed by JS) -->
+                <li id="sidebarLoginListItem" class="sidebar-list-item">
+                    <a href="login.html" id="sidebarLoginLink" class="sidebar-nav-link">Login</a>
+                </li>
+                <li id="sidebarUserAvatarListItem" class="sidebar-list-item sidebar-user-info hidden">
+                    <img id="sidebarUserAvatarImg" class="sidebar-user-avatar-img" src="https://placehold.co/40x40/4CAF50/FFFFFF?text=U" alt="User Avatar">
+                    <span id="sidebarUserName">User Name</span>
+                </li>
+                <li id="sidebarProfileLinkDropdown" class="sidebar-list-item hidden">
+                    <a href="profile.html" class="sidebar-nav-link">Profile</a>
+                </li>
+                <li id="sidebarLogoutListItem" class="sidebar-list-item hidden">
+                    <button id="sidebarLogoutButton" class="sidebar-logout-button">Logout</button>
+                </li>
+            </ul>
+        </aside>
+    </div>
+
+    <div class="main-content-wrapper">
+        <div class="progress-container">
+            <div class="top-nav">
+                <div class="nav-item name-section">
+                    <span>Name</span>
+                    <input type="text" id="search-input" placeholder="Search by name" class="search-input">
+                </div>
+                <div class="nav-item file-section">
+                    <span>Latest File</span>
+                </div>
+                <div class="nav-item games-section">
+                    <span>Latest Game</span>
+                </div>
+                <div class="nav-item action-section">
+                    <span>Action</span>
+                </div>
+            </div>
+
+            <div class="user-list-wrapper">
+                <div class="user-list" id="user-list">
+                    <!-- User entries will be dynamically loaded here -->
+                    <p>Loading users...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteConfirmationModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this user's account?</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteYes">Yes</button>
+                <button id="confirmDeleteNo">No</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-column">
+                <h3>ECOMIND</h3>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-pinterest"></i> Pinterest</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>About Us</h3>
+                <ul>
+                    <li><a href="#">About Ecomind</a></li>
+                    <li><a href="#">Vision & Mission</a></li>
+                    <li><a href="#">Partnership</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li>1-800-555-5555</li>
+                    <li><a href="#">Join us</a></li>
+                    <li><a href="#">Email us</a></li>
+                    <li><a href="#">Customer Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Learning</h3>
+                <ul>
+                    <li><a href="#">Modules</a></li>
+                    <li><a href="#">Quizzes</a></li>
+                    <li><a href="#">Games</a></li>
+                    <li><a href="#">Volunteers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; <span id="year"></span> 2025 EcoMind</span>
+            <a href="#">EcoMind Policies</a>
+            <a href="#">Terms of Use</a>
+            <a href="aboutus.html">About us</a>
+        </div>
+    </footer>
+
+    <script>
+        // IMPORTANT: These variables are provided by the Canvas environment at runtime.
+        // DO NOT change these lines. They ensure your app connects to the correct Firebase project.
+        window.__firebase_config = JSON.stringify({
+            apiKey: "AIzaSyCXhfb3vyz3uWd-4p3t4UudLPzT-PD9JtE",
+            authDomain: "ecomind-164ad.firebaseapp.com",
+            projectId: "ecomind-164ad",
+            storageBucket: "ecomind-164ad.firebasestorage.app",
+            messagingSenderId: "342215046607",
+            appId: "1:342215046607:web:3b7465bc2a846acb000eba"
+        });
+        window.__app_id = "1:342215046607:web:3b7465bc2a846acb000eba";
+    </script>
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables
+        let app;
+        let auth;
+        let db;
+        let currentUserId = null;
+        let isAuthReady = false; // Flag to indicate if Firebase auth state has been initially checked
+        let appId = 'default-app-id'; // Fallback, primarily overridden by window.__app_id
+
+        // --- Modal Functions ---
+        // This modal is specifically for delete confirmation, not general messages.
+        // So, no 'OK' button, just 'Yes'/'No'.
+        // We'll use a separate, simpler showModal for general messages if needed.
+        window.showGeneralModal = function(message) {
+            const modal = document.getElementById('generalMessageModal'); // Assuming a general message modal exists or is added
+            const modalMessage = document.getElementById('generalModalMessage');
+            if (modalMessage) modalMessage.textContent = message;
+            if (modal) {
+                modal.style.display = 'flex';
+            } else {
+                console.warn("General message modal not found. Falling back to alert.");
+                alert(message); // Fallback if no general modal is provided
+            }
+        };
+
+        window.closeGeneralModal = function() {
+            const modal = document.getElementById('generalMessageModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // --- Firebase Initialization & Authentication State Management ---
+        async function initializeFirebase() {
+            try {
+                let firebaseConfig = {};
+
+                if (typeof window.__firebase_config !== 'undefined' && window.__firebase_config) {
+                    try {
+                        firebaseConfig = JSON.parse(window.__firebase_config);
+                        console.log("Parsed firebaseConfig from global window.");
+                    } catch (parseError) {
+                        console.error("Error parsing __firebase_config:", parseError);
+                        window.showGeneralModal("Firebase configuration parsing error. Please check the Canvas environment settings.");
+                        throw new Error("Firebase config parsing failed.");
+                    }
+                } else {
+                    console.warn("__firebase_config is undefined or empty. Firebase will not be initialized with proper config.");
+                    window.showGeneralModal("Firebase configuration is missing. Please ensure your Canvas environment provides it.");
+                    throw new Error("Firebase config missing.");
+                }
+
+                if (typeof window.__app_id !== 'undefined' && window.__app_id) {
+                    appId = window.__app_id;
+                    console.log("App ID from global window:", appId);
+                } else {
+                    console.warn("__app_id is undefined or empty. Using default-app-id.");
+                }
+
+                if (Object.keys(firebaseConfig).length > 0) {
+                    app = initializeApp(firebaseConfig);
+                    auth = getAuth(app);
+                    db = getFirestore(app);
+                    console.log("Firebase initialized successfully. App, Auth, and DB instances created.");
+
+                    // Listen for authentication state changes
+                    onAuthStateChanged(auth, async (user) => {
+                        console.log("Auth state changed. User:", user ? user.uid : "null");
+
+                        // Get references to all relevant UI elements for TOP NAV
+                        const loginLink = document.getElementById('loginLink');
+                        const userAvatarContainer = document.getElementById('userAvatarContainer');
+                        const userAvatarImg = document.getElementById('userAvatarImg');
+                        const userDropdownMenu = document.getElementById('userDropdownMenu');
+                        const logoutButton = document.getElementById('logoutButton');
+                        const profileLinkDropdown = document.getElementById('profileLinkDropdown');
+
+                        // Get references to all relevant UI elements for SIDEBAR
+                        const sidebarLoginListItem = document.getElementById('sidebarLoginListItem');
+                        const sidebarUserAvatarListItem = document.getElementById('sidebarUserAvatarListItem');
+                        const sidebarUserAvatarImg = document.getElementById('sidebarUserAvatarImg');
+                        const sidebarUserName = document.getElementById('sidebarUserName');
+                        const sidebarLogoutListItem = document.getElementById('sidebarLogoutListItem');
+                        const sidebarLogoutButton = document.getElementById('sidebarLogoutButton');
+                        const sidebarProfileLinkDropdown = document.getElementById('sidebarProfileLinkDropdown');
+
+                        if (user) {
+                            // User is signed in
+                            currentUserId = user.uid;
+                            // The userIdDisplay element is not in this HTML, so remove its usage
+                            // const userIdDisplay = document.getElementById('userIdDisplay');
+                            // if (userIdDisplay) userIdDisplay.textContent = `User ID: ${currentUserId}`;
+
+                            // --- Top Navigation UI Update (Logged In) ---
+                            if (loginLink) loginLink.classList.add('hidden');
+                            if (userAvatarContainer) {
+                                userAvatarContainer.classList.remove('hidden');
+                                if (userAvatarImg) {
+                                    userAvatarImg.src = user.photoURL || `https://placehold.co/40x40/4CAF50/FFFFFF?text=${user.email ? user.email.charAt(0).toUpperCase() : 'U'}`;
+                                    userAvatarImg.alt = user.displayName || 'User Avatar';
+                                }
+                                userAvatarContainer.onclick = toggleUserDropdown;
+                            }
+                            if (logoutButton) logoutButton.onclick = handleLogout;
+                            if (profileLinkDropdown) profileLinkDropdown.href = `profile.html?uid=${user.uid}`;
+
+                            // --- Sidebar Navigation UI Update (Logged In) ---
+                            if (sidebarLoginListItem) sidebarLoginListItem.classList.add('hidden');
+                            if (sidebarUserAvatarListItem) {
+                                sidebarUserAvatarListItem.classList.remove('hidden');
+                                if (sidebarUserAvatarImg) {
+                                    sidebarUserAvatarImg.src = user.photoURL || `https://placehold.co/40x40/4CAF50/FFFFFF?text=${user.email ? user.email.charAt(0).toUpperCase() : 'U'}`;
+                                    sidebarUserAvatarImg.alt = user.displayName || 'User Avatar';
+                                }
+                                if (sidebarUserName) sidebarUserName.textContent = user.displayName || user.email || 'User';
+                            }
+                            if (sidebarLogoutListItem) sidebarLogoutListItem.classList.remove('hidden');
+                            if (sidebarLogoutButton) sidebarLogoutButton.onclick = handleLogout;
+                            if (sidebarProfileLinkDropdown) {
+                                sidebarProfileLinkDropdown.classList.remove('hidden');
+                                sidebarProfileLinkDropdown.querySelector('a').href = `profile.html?uid=${user.uid}`;
+                            }
+
+                            // --- Firestore User Profile Management (for current user) ---
+                            // Ensure the current admin user's profile exists and update last login time
+                            const userProfileRef = doc(db, `artifacts/${appId}/users/${currentUserId}/user_profiles`, currentUserId);
+                            try {
+                                const userProfileSnap = await getDoc(userProfileRef);
+                                if (!userProfileSnap.exists()) {
+                                    await setDoc(userProfileRef, {
+                                        email: user.email || null,
+                                        displayName: user.displayName || null,
+                                        photoURL: user.photoURL || null,
+                                        role: user.isAnonymous ? 'anonymous' : 'admin', // Assuming this page is for admin
+                                        registrationDate: new Date().toISOString(),
+                                    }, { merge: true });
+                                    console.log("Created new admin user profile for:", currentUserId);
+                                }
+                                await setDoc(userProfileRef, {
+                                    lastLogin: new Date().toISOString()
+                                }, { merge: true });
+                                console.log("Last login updated for admin user:", currentUserId);
+
+                                // Load all users and their activities for the report
+                                loadUsersAndActivities();
+
+                            } catch (error) {
+                                console.error("Error ensuring/updating admin user profile in Firestore:", error);
+                                window.showGeneralModal('Error updating admin profile: ' + error.message);
+                            }
+
+                        } else {
+                            // User is signed out
+                            currentUserId = null;
+                            // const userIdDisplay = document.getElementById('userIdDisplay');
+                            // if (userIdDisplay) userIdDisplay.textContent = 'Not logged in';
+
+                            // --- Top Navigation UI Update (Logged Out) ---
+                            if (loginLink) {
+                                loginLink.classList.remove('hidden');
+                                loginLink.textContent = 'Login';
+                                loginLink.href = 'login.html';
+                                loginLink.onclick = null;
+                            }
+                            if (userAvatarContainer) userAvatarContainer.classList.add('hidden');
+                            if (userDropdownMenu) userDropdownMenu.classList.remove('show');
+
+                            // --- Sidebar Navigation UI Update (Logged Out) ---
+                            if (sidebarLoginListItem) {
+                                sidebarLoginListItem.classList.remove('hidden');
+                                const sidebarLoginLink = document.getElementById('sidebarLoginLink');
+                                if (sidebarLoginLink) {
+                                    sidebarLoginLink.textContent = 'Login';
+                                    sidebarLoginLink.href = 'login.html';
+                                    sidebarLoginLink.onclick = null;
+                                }
+                            }
+                            if (sidebarUserAvatarListItem) sidebarUserAvatarListItem.classList.add('hidden');
+                            if (sidebarLogoutListItem) sidebarLogoutListItem.classList.add('hidden');
+                            if (sidebarProfileLinkDropdown) sidebarProfileLinkDropdown.classList.add('hidden');
+
+                            // Clear user list if not logged in
+                            const userListDiv = document.getElementById('user-list');
+                            if (userListDiv) {
+                                userListDiv.innerHTML = '<p>Please log in as an administrator to view user progress.</p>';
+                            }
+
+                            // Redirect to login if not authenticated and on admin page
+                            if (window.location.pathname.includes('statusbar.html') && isAuthReady) {
+                                window.showGeneralModal('You need to be logged in as an administrator to view this page.', () => {
+                                    window.location.href = 'login.html';
+                                });
+                            }
+                        }
+                        isAuthReady = true;
+                        console.log("Firebase Auth state initial check complete (isAuthReady = true).");
+                    });
+                } else {
+                    console.error("Firebase config is empty after parsing. Firebase will not be initialized.");
+                    // const userIdDisplay = document.getElementById('userIdDisplay');
+                    // if (userIdDisplay) userIdDisplay.textContent = 'Firebase not initialized (config empty)';
+                    window.showGeneralModal("Firebase configuration is empty. Please ensure your Canvas environment provides a valid config.");
+                }
+            } catch (e) {
+                console.error("Critical error during Firebase setup:", e);
+                window.showGeneralModal('A critical error occurred during Firebase setup: ' + e.message + '. Check console for details.');
+                // const userIdDisplay = document.getElementById('userIdDisplay');
+                // if (userIdDisplay) userIdDisplay.textContent = 'Firebase critical error';
+            }
+        }
+
+        /**
+         * Fetches all user profiles and their latest activities from Firestore
+         * and displays them in the user list.
+         */
+        async function loadUsersAndActivities() {
+            if (!db || !appId) {
+                console.warn("Firestore or appId not available for loading users.");
+                const userListDiv = document.getElementById('user-list');
+                if (userListDiv) userListDiv.innerHTML = '<p>Failed to load users: Firebase not ready.</p>';
+                return;
+            }
+
+            const userListDiv = document.getElementById('user-list');
+            if (userListDiv) userListDiv.innerHTML = '<p>Loading users...</p>'; // Show loading state
+
+            try {
+                // Fetch all user profiles
+                const userProfilesCollectionRef = collection(db, `artifacts/${appId}/users`);
+                const userProfilesSnapshot = await getDocs(userProfilesCollectionRef);
+
+                const usersData = [];
+                for (const userDoc of userProfilesSnapshot.docs) {
+                    const userId = userDoc.id;
+                    const userProfileRef = doc(db, `artifacts/${appId}/users/${userId}/user_profiles`, userId);
+                    const userProfileSnap = await getDoc(userProfileRef);
+
+                    if (userProfileSnap.exists()) {
+                        const userData = userProfileSnap.data();
+                        
+                        // Fetch latest file submission
+                        const filesQuery = query(
+                            collection(db, `artifacts/${appId}/users/${userId}/activities`),
+                            where('type', '==', 'file_submission')
+                            // orderBy('timestamp', 'desc') // Removed orderBy as per instruction, will sort client-side
+                        );
+                        const filesSnapshot = await getDocs(filesQuery);
+                        let latestFile = null;
+                        if (!filesSnapshot.empty) {
+                            // Sort client-side if orderBy is not used in query
+                            const sortedFiles = filesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+                                .sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+                            latestFile = sortedFiles[0];
+                        }
+
+                        // Fetch latest game play
+                        const gamesQuery = query(
+                            collection(db, `artifacts/${appId}/users/${userId}/activities`),
+                            where('type', '==', 'game_play')
+                            // orderBy('timestamp', 'desc') // Removed orderBy as per instruction, will sort client-side
+                        );
+                        const gamesSnapshot = await getDocs(gamesQuery);
+                        let latestGame = null;
+                        if (!gamesSnapshot.empty) {
+                            // Sort client-side if orderBy is not used in query
+                            const sortedGames = gamesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+                                .sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+                            latestGame = sortedGames[0];
+                        }
+
+                        usersData.push({
+                            id: userId,
+                            displayName: userData.displayName || userData.email || 'Unknown User',
+                            latestFile: latestFile ? latestFile.activityName : null,
+                            latestGame: latestGame ? latestGame.activityName : null,
+                            isOnline: (new Date().getTime() - (new Date(userData.lastLogin).getTime() || 0)) < (5 * 60 * 1000) // Online if last login within 5 mins
+                        });
+                    }
+                }
+                displayUsers(usersData);
+            } catch (error) {
+                console.error("Error loading users and activities:", error);
+                if (userListDiv) userListDiv.innerHTML = '<p>Error loading user data.</p>';
+                window.showGeneralModal('Error loading user data: ' + error.message);
+            }
+        }
+
+        /**
+         * Renders the list of users in the UI.
+         * @param {Array<Object>} users - Array of user objects with displayName, latestFile, latestGame, isOnline.
+         */
+        function displayUsers(users) {
+            const userListDiv = document.getElementById('user-list');
+            if (!userListDiv) return;
+
+            userListDiv.innerHTML = ''; // Clear existing entries
+
+            if (users.length === 0) {
+                userListDiv.innerHTML = '<p>No users found.</p>';
+                return;
+            }
+
+            users.forEach(user => {
+                const userEntry = document.createElement('div');
+                userEntry.classList.add('user-entry');
+                userEntry.dataset.userId = user.id;
+                userEntry.dataset.userName = user.displayName.toLowerCase(); // For search
+
+                const statusClass = user.isOnline ? 'online' : '';
+
+                userEntry.innerHTML = `
+                    <div class="user-info">
+                        <span class="status-indicator ${statusClass}"></span>
+                        <a href="profile.html?uid=${user.id}" class="user-name-link"><span class="user-name">${user.displayName}</span></a>
+                    </div>
+                    <div class="user-progress">
+                        <div class="progress-item file-upload">
+                            <span class="status ${user.latestFile ? 'submitted' : 'not-submitted'}">${user.latestFile || 'No file submitted'}</span>
+                        </div>
+                    </div>
+                    <div class="user-progress">
+                        <div class="progress-item game-played">
+                            <span class="status ${user.latestGame ? 'submitted' : 'not-played'}">${user.latestGame || 'No game played'}</span>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="delete-btn" data-user-id="${user.id}">
+                            <img src="https://placehold.co/20x20/FF0000/FFFFFF?text=X" alt="Delete">
+                        </button>
+                    </div>
+                `;
+                userListDiv.appendChild(userEntry);
+            });
+        }
+
+        // --- Delete Confirmation Modal Logic ---
+        const deleteModal = document.getElementById('deleteConfirmationModal');
+        const confirmDeleteYes = document.getElementById('confirmDeleteYes');
+        const confirmDeleteNo = document.getElementById('confirmDeleteNo');
+        const userList = document.getElementById('user-list');
+        let userToDeleteId = null; // To store the ID of the user to be deleted
+
+        // Event delegation for delete buttons
+        userList.addEventListener('click', (event) => {
+            const deleteBtn = event.target.closest('.delete-btn');
+            if (deleteBtn) {
+                userToDeleteId = deleteBtn.dataset.userId; // Get the user ID from the button's data attribute
+                deleteModal.style.display = 'flex'; // Show the modal
+                document.body.style.overflow = 'hidden'; // Prevent scrolling body when modal is open
+            }
+        });
+
+        // Handle 'Yes' click for deletion
+        confirmDeleteYes.addEventListener('click', async () => {
+            if (userToDeleteId && db && appId) {
+                try {
+                    // Delete user profile document
+                    const userProfileRef = doc(db, `artifacts/${appId}/users/${userToDeleteId}/user_profiles`, userToDeleteId);
+                    await deleteDoc(userProfileRef);
+                    console.log(`User profile with ID ${userToDeleteId} deleted from Firestore.`);
+
+                    // Note: Deleting subcollections (like 'activities') from client-side is complex
+                    // and usually handled by a Cloud Function for recursive deletion.
+                    // For this example, we'll just log that activities should also be considered.
+                    console.warn(`Activities for user ${userToDeleteId} might still exist in Firestore. Consider implementing a Cloud Function for full recursive deletion.`);
+
+                    // Remove the user entry from the DOM
+                    const userEntry = document.querySelector(`.user-entry[data-user-id="${userToDeleteId}"]`);
+                    if (userEntry) {
+                        userEntry.remove();
+                        console.log(`User entry with ID ${userToDeleteId} removed from DOM.`);
+                    }
+                    window.showGeneralModal(`User ${userToDeleteId} has been deleted.`);
+                } catch (error) {
+                    console.error("Error deleting user:", error);
+                    window.showGeneralModal('Failed to delete user: ' + error.message);
+                }
+            }
+            userToDeleteId = null; // Reset
+            deleteModal.style.display = 'none'; // Hide the modal
+            document.body.style.overflow = ''; // Allow body scrolling again
+        });
+
+        // Handle 'No' click for deletion
+        confirmDeleteNo.addEventListener('click', () => {
+            userToDeleteId = null; // Reset
+            deleteModal.style.display = 'none'; // Hide the modal
+            document.body.style.overflow = ''; // Allow body scrolling again
+        });
+
+        // Close modal if clicked outside (on the overlay)
+        deleteModal.addEventListener('click', (event) => {
+            if (event.target === deleteModal) {
+                userToDeleteId = null; // Reset
+                deleteModal.style.display = 'none'; // Hide the modal
+                document.body.style.overflow = ''; // Allow body scrolling again
+            }
+        });
+
+        // --- Search Functionality ---
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (event) => {
+                const searchTerm = event.target.value.toLowerCase();
+                const userEntries = document.querySelectorAll('.user-list .user-entry');
+                userEntries.forEach(entry => {
+                    const userName = entry.dataset.userName;
+                    if (userName.includes(searchTerm)) {
+                        entry.style.display = 'grid'; // Show the entry
+                    } else {
+                        entry.style.display = 'none'; // Hide the entry
+                    }
+                });
+            });
+        }
+
+        // --- Logout Function (from header/sidebar) ---
+        async function handleLogout(e) {
+            e.preventDefault();
+            console.log("Logout button clicked.");
+
+            if (!auth) {
+                window.showGeneralModal('Firebase Auth is not initialized. Cannot log out.');
+                return;
+            }
+            try {
+                await signOut(auth);
+                // Clear session storage related to login status
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userType');
+                window.location.href = 'login.html'; // Redirect to login page
+            } catch (error) {
+                console.error("Error during logout:", error);
+                window.showGeneralModal('Logout failed: ' + error.message);
+            }
+        }
+
+        // --- User Avatar Dropdown Toggle (for Top Nav) ---
+        function toggleUserDropdown() {
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+            if (userDropdownMenu) {
+                userDropdownMenu.classList.toggle('show');
+            }
+        }
+
+        // --- Close dropdown if clicked outside ---
+        document.addEventListener('click', (event) => {
+            const userAvatarContainer = document.getElementById('userAvatarContainer');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+            if (userAvatarContainer && userDropdownMenu && !userAvatarContainer.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                userDropdownMenu.classList.remove('show');
+            }
+        });
+
+        // --- Initial DOMContentLoaded checks and event listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded event fired for statusbar.html.");
+
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+            const sidebarContainer = document.getElementById('sidebar-container');
+            const sidebarMenu = document.getElementById('sidebar-menu');
+
+            if (hamburgerIcon) {
+                hamburgerIcon.addEventListener('click', () => {
+                    sidebarContainer.classList.add('open');
+                    sidebarMenu.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', () => {
+                    sidebarContainer.classList.remove('open');
+                    sidebarMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            if (sidebarContainer) {
+                sidebarContainer.addEventListener('click', (event) => {
+                    if (event.target === sidebarContainer) {
+                        sidebarContainer.classList.remove('open');
+                        sidebarMenu.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            const sidebarLinks = document.querySelectorAll('.sidebar-links a, .sidebar-links button');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (link.tagName === 'A' || (link.tagName === 'BUTTON' && link.id !== 'sidebarLogoutButton')) {
+                        sidebarContainer.classList.remove('open');
+                        sidebarMenu.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Set active class for navigation links
+            const currentPath = window.location.pathname.split('/').pop();
+            document.querySelectorAll('.top-nav-links a, .sidebar-links a').forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === currentPath || (linkHref === "homepage.html" && (currentPath === "" || currentPath === "index.html"))) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            initializeFirebase(); // Initialize Firebase and load data
+        });
+    </script>
+</body>
+</html>
