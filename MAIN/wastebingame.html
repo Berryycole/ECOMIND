@@ -47,42 +47,54 @@
         </aside>
     </div>
     <main class="game-container">
-        <div id="game-screen" class="game-screen">
-            <div class="score-board">
-              <br><br>  Score: <span id="score">0</span> | Correct: <span id="correct">0</span> | Wrong: <span id="wrong">0</span>
-            </div>
-            <div class="item-display">
-                <div class="draggable-item" draggable="true">
-                    <img id="current-item-image" src="" alt="Item to sort">
-                    <p id="current-item-name"></p>
-                    <p class="drag-instruction">Drag the item to the correct bin!</p>
-                </div>
-            </div>
-            <div class="bins-container">
-                <div class="bin" id="Biodegradable">
-                    <img src="https://i.ibb.co/pjGCq4T6/biodegradable.png" alt="Biodegradable Bin">
-                    <p>Biodegradable</p>
-                </div>
-                <div class="bin" id="Non-Biodegradable">
-                    <img src="https://i.ibb.co/93pFWNP9/nonbio.png" alt="Non-Biodegradable Bin">
-                    <p>Non-Biodegradable</p>
-                </div>
-                <div class="bin" id="Recyclable">
-                    <img src="https://i.ibb.co/mFcPSHW8/recyclable.png" alt="Recyclable Bin">
-                    <p>Recyclable</p>
-                </div>
-                <div class="bin" id="Hazardous">
-                    <img src="https://i.ibb.co/Pv99J9FR/hazardous.png" alt="Hazardous Bin">
-                    <p>Hazardous</p>
-                </div>
-            </div>
-            <div id="game-over-screen" class="game-over-screen hidden">
-                <h2>Game Over!</h2>
-                <p>Your final score: <span id="final-score"></span></p>
-                <button id="play-again-btn">Play Again</button>
+    <div id="game-screen" class="game-screen">
+        <div class="score-board">
+            <br><br> Score: <span id="score">0</span> | Correct: <span id="correct">0</span> | Wrong: <span id="wrong">0</span>
+        </div>
+        <div class="item-display">
+            <div class="draggable-item" draggable="true">
+                <img id="current-item-image" src="" alt="Item to sort">
+                <p id="current-item-name"></p>
+                <p class="drag-instruction">Drag the item to the correct bin!</p>
             </div>
         </div>
-    </main>
+        <div class="bins-container">
+            <div class="bin" id="Biodegradable">
+                <img src="https://i.ibb.co/pjGCq4T6/biodegradable.png" alt="Biodegradable Bin">
+                <p>Biodegradable</p>
+            </div>
+            <div class="bin" id="Non-Biodegradable">
+                <img src="https://i.ibb.co/93pFWNP9/nonbio.png" alt="Non-Biodegradable Bin">
+                <p>Non-Biodegradable</p>
+            </div>
+            <div class="bin" id="Recyclable">
+                <img src="https://i.ibb.co/mFcPSHW8/recyclable.png" alt="Recyclable Bin">
+                <p>Recyclable</p>
+            </div>
+            <div class="bin" id="Hazardous">
+                <img src="https://i.ibb.co/Pv99J9FR/hazardous.png" alt="Hazardous Bin">
+                <p>Hazardous</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="game-over-screen hidden">
+    <h2>Game Over!</h2>
+    <p>Your final score: <span id="final-score"></span></p>
+    <p>Items Sorted: <span id="items-sorted"></span></p>
+    <p>Correct Answers: <span id="final-correct"></span></p>
+    <p>Wrong Answers: <span id="final-wrong"></span></p>
+
+    <h3>Sorting Performance</h3>
+    <div class="chart-container">
+        <canvas id="performanceChart"></canvas>
+    </div>
+    <div class="summary-buttons">
+        <button id="play-again-btn">Play Again</button>
+        <button id="home-btn">Home</button>
+        </div>
+</div>
+</main>
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-column">
@@ -141,6 +153,27 @@
         window.__app_id = "1:342215046607:web:3b7465bc2a846acb000eba";
     </script>
 <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+    // ... (your existing DOMContentLoaded code) ...
+    let myChart; // Add this near the top of DOMContentLoaded, with other variable declarations
+    const playAgainBtn = document.getElementById('play-again-btn');
+    // New: Get reference to the home button
+    const homeBtn = document.getElementById('home-btn');
+    if (homeBtn) {
+    homeBtn.addEventListener('click', () => {
+        window.location.href = 'homepage.html';
+    });
+}
+
+    // ... (your existing game variables and functions) ...
+
+    playAgainBtn.addEventListener('click', initializeGame);
+
+    // New: Add event listener for the home button
+    
+
+    // ... (rest of your DOMContentLoaded code, including initializeGame() call) ...
+});
     // Firebase Imports (MUST be at the top of a module script)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -462,6 +495,7 @@
         const gameScreen = document.getElementById('game-screen');
         const gameOverScreen = document.getElementById('game-over-screen');
         const playAgainBtn = document.getElementById('play-again-btn');
+        const homeBtn = document.getElementById('home-btn');
         const finalScoreSpan = document.getElementById('final-score');
         const scoreElement = document.getElementById('score');
         const correctElement = document.getElementById('correct');
@@ -470,7 +504,7 @@
         const currentItemName = document.getElementById('current-item-name');
         const draggableItem = document.querySelector('.draggable-item');
         const bins = document.querySelectorAll('.bin');
-
+        
         let score = 0;
         let correctCount = 0;
         let wrongCount = 0;
@@ -498,7 +532,7 @@
             { name: "Egg Shells", category: "Biodegradable", image: "https://i.ibb.co/p6JVJxGY/egg-shells.png" },
             { name: "Metal Scrap", category: "Recyclable", image: "https://i.ibb.co/LhxGN4R0/metal-scrap.png" }
         ];
-
+        let myChart;
         let randomizedItems = [];
         let currentItem = null;
 
@@ -525,10 +559,60 @@
         }
 
         function endGame() {
-            gameScreen.classList.add('hidden');
-            gameOverScreen.classList.remove('hidden');
-            finalScoreSpan.textContent = score;
+    gameScreen.classList.add('hidden');
+    gameOverScreen.classList.remove('hidden');
+    finalScoreSpan.textContent = score;
+    document.getElementById('items-sorted').textContent = itemCounter;
+    document.getElementById('final-correct').textContent = correctCount;
+    document.getElementById('final-wrong').textContent = wrongCount;
+
+    // New: Chart.js Pie Chart Logic
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+
+    // Destroy existing chart if it exists to prevent multiple charts on replay
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Correct', 'Wrong'],
+            datasets: [{
+                data: [correctCount, wrongCount],
+                backgroundColor: [
+                    '#4CAF50', // Green for Correct
+                    '#dc3545'  // Red for Wrong
+                ],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allows chart to fill chart-container height
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed;
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
         }
+    });
+    // End New Chart.js Logic
+}
 
         function loadNextItem() {
             if (itemCounter < maxItems) {
